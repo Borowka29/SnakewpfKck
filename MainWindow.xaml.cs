@@ -22,10 +22,10 @@ namespace Snakewpf
     public partial class MainWindow : Window
     {
         Random rand = new Random();
-        private SolidColorBrush foodBrush = Brushes.Red;
+        private SolidColorBrush foodBrush;
         private Snake Snake;
-        private SolidColorBrush snakeBodyBrush = Brushes.Green;
-        private SolidColorBrush snakeHeadBrush = Brushes.YellowGreen;
+        private SolidColorBrush snakeBodyBrush = Brushes.DeepSkyBlue;
+        private SolidColorBrush snakeHeadBrush = Brushes.Blue;
         private DispatcherTimer gameTickTimer = new DispatcherTimer();
         private int licznik ;
         public MainWindow()
@@ -40,7 +40,7 @@ namespace Snakewpf
             Snake.Update(GameArea);
             gameTickTimer.Interval = TimeSpan.FromMilliseconds(400);
             DrawSnake();
-            DrawSnakeFood();UpdateGameStatus();
+            DrawSnakeFood(0);UpdateGameStatus();
             gameTickTimer.IsEnabled = true;
         }
         private void canvas_KeyDown(object sender, KeyEventArgs e)
@@ -90,19 +90,16 @@ namespace Snakewpf
                     break;
             }
 
-            // Now add the new head part to our list of snake parts...  
-            Snake.Points.Add(new Position()
-            {
-                left = nextX, 
-                top = nextY,
-                isHead = true
-            }); DoCollisionCheck();  
+            // Now add the new head part to our list of snake parts... 
+            Snake.AddPoint(nextX, nextY, true);
+            var o = Snake.Points.Count;
+            DoCollisionCheck();  
             DrawSnake();  
                     
         }
         
         
-        private void DrawSnakeFood()
+        private void DrawSnakeFood(int licznik)
         {
             int maxX = (int)(GameArea.ActualWidth / 20);
             int maxY = (int)(GameArea.ActualHeight / 20);
@@ -119,6 +116,11 @@ namespace Snakewpf
             }
             Snake.Food.left = foodX;
             Snake.Food.top = foodY;
+            if (licznik == 8) foodBrush = Brushes.Red;
+            else
+            {
+                foodBrush = Brushes.Purple;
+            }
             Snake.Food.shape = new Ellipse()
             {
                 Width = GameArea.ActualWidth/20,
@@ -132,7 +134,7 @@ namespace Snakewpf
         }
         private void UpdateGameStatus()
         {
-            scoree.Content= "SnakeWPF - Score: " + Snake.Score + " - Game speed: " + gameTickTimer.Interval.TotalMilliseconds;
+            scoree.Content= "Score: " + Snake.Score + "  speed: " + gameTickTimer.Interval.TotalMilliseconds;
         }
         private void EatSnakeFood()
         {
@@ -150,7 +152,7 @@ namespace Snakewpf
             
             gameTickTimer.Interval = TimeSpan.FromMilliseconds(timerInterval);
             GameArea.Children.Remove(Snake.Food.shape);
-            DrawSnakeFood();
+            DrawSnakeFood(licznik);
             UpdateGameStatus();
         }
         private void EndGame()
@@ -173,10 +175,9 @@ namespace Snakewpf
             {
                 EndGame();
             }
-
-            foreach (Position snakeBodyPart in Snake.Points.Take(Snake.Points.Count - 1))
+            var o = Snake.Points.Count;
+           if( Snake.Look(snakeHead))
             {
-                if ((snakeHead.left == snakeBodyPart.left) && (snakeHead.top == snakeBodyPart.top))
                 EndGame();
             }
         }

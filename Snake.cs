@@ -23,15 +23,12 @@ namespace Snakewpf
         public SnakeDirection SnakeDirectionn
         {
             get { return snakeDirectionn; }
-            set { }
         }
-        public static int snakeLength = 2;
+        public static int snakeLength = 0;
         public int SnakeLenght
         {
             get { return snakeLength; }
         }
-        private static Position _foodPosition = null;
-        private static Position _bonusPosition = null;
         private static Random _rnd = new Random();
         public static  Position Food=new Position();
         private static SolidColorBrush snakeBodyBrush = Brushes.Green;
@@ -41,13 +38,11 @@ namespace Snakewpf
         public int Score
         {
             get { return score; }
-            set { }
         }
-        //static KeyEvent _lastKey;
         public Snake(Canvas gameArea)
         {
             score = 0;
-            snakeLength = 2;
+            snakeLength = 0;
             snakeDirectionn = SnakeDirection.Right;
             points.Add(new Position() { left = 0, top = 0 });
            
@@ -67,7 +62,20 @@ namespace Snakewpf
             snakeDirectionn = SnakeDirection.Right;
             points.Add(new Position() { left = 0, top = 0 });
         }
-       
+        public static void AddPoint(double x, double y,bool prawda)
+        {
+            points.Add(new Position() { left = x, top = y, isHead = prawda });
+        }
+        public static bool Look(Position snakeHead)
+        {
+            foreach (Position snakeBodyPart in points.Take(points.Count - 1))
+            {
+                if ((snakeHead.left == snakeBodyPart.left) && (snakeHead.top == snakeBodyPart.top))
+                { return true; }
+                
+                   
+            }return false;
+        }
         public static bool Move(Key e)
         {
             SnakeDirection originalSnakeDirection = snakeDirectionn;

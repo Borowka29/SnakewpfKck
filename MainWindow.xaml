@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snakewpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="auto" Width="auto" KeyDown="canvas_KeyDown" Loaded="Window_Loaded" ContentRendered="Window_ContentRendered">
+        Title="MainWindow" Width="415" Height="470" KeyDown="canvas_KeyDown" Loaded="Window_Loaded" ContentRendered="Window_ContentRendered">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="10" Width="400" Height="400" Name="ramka">
-            <Canvas Name="GameArea" ClipToBounds="True">
+        <Border VerticalAlignment="Center" Grid.Row="1" BorderBrush="Green" BorderThickness="10" Width="400" Height="400" Name="ramka">
+            <Canvas  Name="GameArea" ClipToBounds="True">
 
             </Canvas>
         </Border>
-        <Label  Name="scoree"></Label>
+        <Label  Name="scoree" HorizontalAlignment="Center" Background="Black" FontFamily="Segoe UI" FontSize="18" Foreground="White"></Label>
     </Grid>
 </Window>
